@@ -4,6 +4,7 @@ import uvicorn
 import os
 from fastapi.templating import Jinja2Templates
 import subprocess
+import aspose.words as aw
 
 for top, dirs, files in os.walk('/my/pdf/folder'):
     for filename in files:
@@ -22,7 +23,9 @@ project_dir = os.path.dirname(os.path.abspath(__file__))  # Get the absolute pat
 
 def convert_pdf_to_docx(pdf_path, docx_path):
     try:
-        subprocess.call('lowriter --invisible --convert-to doc "{}"'.format(pdf_path), shell=True)
+        # subprocess.call('lowriter --invisible --convert-to doc "{}"'.format(pdf_path), shell=True)
+        doc = aw.Document(pdf_path)
+        doc.save(docx_path)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error converting PDF to DOCX: {e}")
 
