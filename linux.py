@@ -14,9 +14,9 @@ path_output = 'output/'
 project_dir = os.path.dirname(os.path.abspath(__file__))  # Get the absolute path of the project directory
 
 
-def convert_pdf_to_docx(pdf_path, docx_path):
+def convert_pdf_to_docx(pdf_path, docx_path, path_output):
     try:
-        subprocess.call('libreoffice --headless --convert-to docx:"Microsoft Word 2007/2010/2013 XML" --outdir "{}" "{}"'.format(docx_path, pdf_path), shell=True)
+        subprocess.call('libreoffice --headless --convert-to docx:"Microsoft Word 2007/2010/2013 XML" --outdir "{}" "{}"'.format(path_output, pdf_path), shell=True)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error converting PDF to DOCX: {e}")
 
@@ -48,7 +48,7 @@ async def convert_and_download(file: UploadFile = File(...)):
         pdf_file.write(file.file.read())
 
     # Convert the PDF to DOCX
-    convert_pdf_to_docx(pdf_path, docx_path)
+    convert_pdf_to_docx(pdf_path, docx_path, path_output)
 
     # Provide the converted DOCX file for download
     response = FileResponse(docx_path, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
