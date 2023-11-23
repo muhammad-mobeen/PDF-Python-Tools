@@ -1,9 +1,15 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException, Form, Request
 from fastapi.responses import FileResponse, HTMLResponse
 import uvicorn
-from pdf2docx import Converter
 import os
 from fastapi.templating import Jinja2Templates
+import subprocess
+
+for top, dirs, files in os.walk('/my/pdf/folder'):
+    for filename in files:
+        if filename.endswith('.pdf'):
+            abspath = os.path.join(top, filename)
+            subprocess.call('lowriter --invisible --convert-to doc "{}"'.format(abspath), shell=True)
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -16,9 +22,7 @@ project_dir = os.path.dirname(os.path.abspath(__file__))  # Get the absolute pat
 
 def convert_pdf_to_docx(pdf_path, docx_path):
     try:
-        cv = Converter(pdf_path)
-        cv.convert(docx_path, start=0, end=None)
-        cv.close()
+        subprocess.call('lowriter --invisible --convert-to doc "{}"'.format(pdf_path), shell=True)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error converting PDF to DOCX: {e}")
 
