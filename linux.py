@@ -17,7 +17,7 @@ project_dir = os.path.dirname(os.path.abspath(__file__))  # Get the absolute pat
 def convert_pdf_to_docx(pdf_path, docx_path, path_output):
     try:
         # subprocess.call('libreoffice --headless --infilter="writer_pdf_import" --convert-to docx:"Microsoft Word 2007/2010/2013 XML" --outdir "{}" "{}"'.format(path_output, pdf_path), shell=True)
-        subprocess.call('libreoffice --headless --infilter="writer_pdf_import" --convert-to docx --outdir "{}" "{}"'.format(path_output, pdf_path), shell=True)
+        subprocess.call('libreoffice --headless --infilter="writer_pdf_import" --convert-to docx:"MS Word 2007 XML" --outdir "{}" "{}"'.format(path_output, pdf_path), shell=True)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error converting PDF to DOCX: {e}")
 
